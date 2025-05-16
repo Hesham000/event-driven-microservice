@@ -1,0 +1,38 @@
+# Node.js
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# dotenv environment variables file
+.env
+
+# MacOS files
+.DS_Store
+
+# Docker
+**/Dockerfile
+
+# Deployment
+**/deployment/
+
+# Misc
+*.swp
+*.swo
+*.swn
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# System files
+Thumbs.db 
