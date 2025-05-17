@@ -19,6 +19,39 @@ This microservice follows a DDD-based layered architecture:
 - **Infrastructure Layer**: Technical implementations (Kafka, MongoDB)
 - **Interface Layer**: API endpoints and Kafka consumers
 
+## Architecture Decisions
+
+### Event-Driven Approach
+We chose an event-driven architecture with Kafka as the backbone for several reasons:
+- **Decoupling**: The producer of activity logs (client applications) is completely decoupled from the consumer (our processing service)
+- **Scalability**: Kafka provides horizontal scalability to handle high throughput of events
+- **Reliability**: Events are persisted in Kafka, ensuring no data loss even during service outages
+- **Asynchronous Processing**: Activity logging doesn't block the main user flow
+
+### Domain-Driven Design
+The implementation follows DDD principles to maintain a clean separation of concerns:
+- **Domain Layer**: Contains the core business logic and entity definitions, free from technical details
+- **Application Layer**: Orchestrates use cases by coordinating domain objects and services
+- **Infrastructure Layer**: Implements technical concerns like database access and message handling
+- **Interface Layer**: Provides external access through REST APIs and Kafka consumers
+
+### Technology Choices
+- **MongoDB**: Selected for its flexible schema, which is ideal for activity logs that may have varying metadata structures. Implemented with proper indexing for efficient queries.
+- **Kafka**: Used for reliable event streaming, allowing the system to handle spikes in activity and providing a buffer during processing service outages.
+- **Express.js**: Provides a lightweight and flexible REST API framework with robust middleware support for validation and error handling.
+- **Node.js**: Offers excellent performance for I/O-bound operations typical in a microservice that primarily deals with network and database operations.
+
+### Resilience Patterns
+- **Circuit Breakers**: Implemented to prevent cascading failures when dependent services are unavailable
+- **Graceful Degradation**: The system continues to function (accepting API requests) even when Kafka is unavailable
+- **Retry Mechanisms**: Failed Kafka message processing is retried with exponential backoff
+- **Error Handling**: Comprehensive error handling across all layers with proper logging
+
+### Deployment Strategy
+- **Docker Containerization**: Ensures consistent environments across development and production
+- **Kubernetes Orchestration**: Provides automated scaling, self-healing, and zero-downtime deployments
+- **Infrastructure as Code**: All deployment configurations are version-controlled alongside the application code
+
 ## Prerequisites
 
 - Node.js 18+
